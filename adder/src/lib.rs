@@ -1,6 +1,7 @@
 extern crate alloc;
 
 use arrow::array::UInt32Array;
+use arrow::compute;
 use arrow::ipc::reader::FileReader;
 use core::alloc::Layout;
 
@@ -38,11 +39,13 @@ pub unsafe extern "C" fn udf(ptr: *const u8, length: i32) -> u32 {
     let mut reader = Cursor::new(input_buffer);
     let reader = FileReader::try_new(&mut reader).unwrap();
     let mut sum: u32 = 0;
-    for row_res in reader {
-        let row = row_res.unwrap();
-        for array in row.columns() {
+    for batch_result in reader {
+        let batch = batch_result.unwrap();
+        for array in batch.columns() {
             let values = array.as_any().downcast_ref::<UInt32Array>().unwrap();
-            sum += values.value(0);
+            if let Some(n) = compute::sum(values) {
+                sum += n;
+            }
         }
     }
     sum
