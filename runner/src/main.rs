@@ -119,8 +119,7 @@ fn run_wasm(instance: &Instance, v1: u32, v2: u32, data: &[u8]) {
         .get_typed_func::<(i32, i32, i32), ()>("free")
         .unwrap();
     free.call((input_data_ptr, data.len() as i32, 0)).unwrap();
-    //TODO: This is an issue I need to fix
-    //free.call((result_struct.ptr, result_struct.len, 0)).unwrap();
+    free.call((result_struct.ptr, result_struct.len, 0)).unwrap();
     free.call((ret, size_of::<UDFResult>() as i32, 0)).unwrap();
     println!("Finished! UDF ran in {}ms", now.elapsed().as_millis());
 

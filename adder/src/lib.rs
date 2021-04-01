@@ -78,7 +78,7 @@ pub unsafe extern "C" fn udf(ptr: *const u8, length: i32) -> *const UDFResult {
         writer.finish().unwrap();
     }
     let len = data.len();
-    let out_ptr= data.as_ptr();
+    let out_ptr= data.leak().as_ptr();
     let result = Box::new(UDFResult{
         ptr: out_ptr as i32,
         len: len as i32

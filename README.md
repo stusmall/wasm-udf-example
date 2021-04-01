@@ -1,3 +1,3 @@
-This is an example of an approach to building user defined functions with wasm and apache arrow.  The one decent sized outstanding piece of work is returning a arrow buffer instead of the sum directly
+This is an example of an approach to building user defined functions with wasm and apache arrow. Still on the todo list is defining an easy to use SDK and adding error handling 
 
 To get started run quickstart.sh
